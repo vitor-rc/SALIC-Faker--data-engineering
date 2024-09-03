@@ -1,0 +1,11 @@
+with base_treated as (
+    select *
+    , try(date(data_inicio)) data_inicio_date
+    , try(date(data_termino)) data_fim_date
+    from salic_faker.vrc_how_desafio1_salic_faker
+),
+analise_tempo as (
+    select area_projeto, data_fim_date, data_inicio_date, try(date_diff('day', data_fim_date, data_inicio_date)) tempo_projeto
+    from base_treated
+)
+select area_projeto, max(tempo_projeto) from analise_tempo group by 1
